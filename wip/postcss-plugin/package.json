@@ -1,0 +1,16 @@
+{
+  "name": "postcss-plugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "postcss": "^7.0.17"
+  },
+  "dependencies": {
+    "is-vendor-prefixed": "^3.3.1"
+  }
+}

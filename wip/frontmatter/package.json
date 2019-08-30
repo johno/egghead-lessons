@@ -1,0 +1,14 @@
+{
+  "name": "remark-html",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node build"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.2",
+    "remark": "^11.0.1",
+    "remark-html": "^10.0.0"
+  }
+}

@@ -1,0 +1,191 @@
+
+<html lang="en">
+  <style>
+    body {
+      font-family: system-ui;
+      font-size: 18px;
+      margin: 80px auto;
+      max-width: 800px;
+    }
+    p {
+      line-height: 1.6;
+    }
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
+}
+
+.hljs-symbol,
+.hljs-bullet {
+  color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+  color: #0086b3;
+}
+
+.hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+  </style>
+  <body>
+    <h1>Fecunda illa</h1>
+<pre><code class="hljs language-js">exports.onCreateNode = <span class="hljs-function">(<span class="hljs-params">{ node, actions, getNode, createNodeId }</span>) =></span> {
+  <span class="hljs-keyword">const</span> { createNode, createParentChildLink, createRedirect } = actions
+
+  <span class="hljs-keyword">const</span> isReadme = <span class="hljs-function"><span class="hljs-params">name</span> =></span> <span class="hljs-regexp">/readme/i</span>.test(name)
+  <span class="hljs-keyword">const</span> isIndexPath = <span class="hljs-function"><span class="hljs-params">name</span> =></span> name === <span class="hljs-string">'index'</span> || isReadme(name)
+
+  <span class="hljs-keyword">const</span> toOriginalDocsPath = <span class="hljs-function"><span class="hljs-params">node</span> =></span> {
+    <span class="hljs-keyword">const</span> { dir } = path.parse(node.relativePath)
+    <span class="hljs-keyword">const</span> fullPath = [
+      basePath,
+      dir,
+      node.name
+    ]
+    <span class="hljs-keyword">return</span> path.join(...fullPath)
+  }
+  <span class="hljs-keyword">const</span> toDocsPath = <span class="hljs-function"><span class="hljs-params">node</span> =></span> {
+    <span class="hljs-keyword">const</span> { dir } = path.parse(node.relativePath)
+    <span class="hljs-keyword">const</span> fullPath = [
+      basePath,
+      dir,
+      !isIndexPath(node.name) &#x26;&#x26; node.name
+    ].filter(<span class="hljs-built_in">Boolean</span>)
+    <span class="hljs-keyword">return</span> path.join(...fullPath)
+  }
+
+  <span class="hljs-comment">// Make sure it's an MDX node</span>
+  <span class="hljs-keyword">if</span> (node.internal.type !== <span class="hljs-string">`Mdx`</span>) {
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-comment">// Create source field (according to contentPath)</span>
+  <span class="hljs-keyword">const</span> fileNode = getNode(node.parent)
+  <span class="hljs-keyword">const</span> source = fileNode.sourceInstanceName
+
+  <span class="hljs-keyword">if</span> (node.internal.type === <span class="hljs-string">`Mdx`</span> &#x26;&#x26; source === contentPath) {
+    <span class="hljs-keyword">const</span> slug = toDocsPath(fileNode)
+
+    <span class="hljs-comment">// Redirect file/path/readme to file/path/ in order to handle</span>
+    <span class="hljs-comment">// potential links that are meant to work with GitHub-style index</span>
+    <span class="hljs-comment">// pages.</span>
+    <span class="hljs-keyword">if</span> (isReadme(fileNode.name)) {
+      createRedirect({
+        <span class="hljs-attr">fromPath</span>: toOriginalDocsPath(fileNode),
+        <span class="hljs-attr">toPath</span>: toDocsPath(fileNode),
+        <span class="hljs-attr">isPermanent</span>: <span class="hljs-literal">true</span>
+      })
+    }
+
+    <span class="hljs-keyword">const</span> title = node.frontmatter.title
+    <span class="hljs-keyword">const</span> description = node.frontmatter.description
+
+    <span class="hljs-keyword">const</span> fieldData = { title, description, slug }
+
+    createNode({
+      ...fieldData,
+      <span class="hljs-attr">id</span>: createNodeId(<span class="hljs-string">`<span class="hljs-subst">${node.id}</span> >>> Docs`</span>),
+      <span class="hljs-attr">parent</span>: node.id,
+      <span class="hljs-attr">children</span>: [],
+      <span class="hljs-attr">internal</span>: {
+        <span class="hljs-attr">type</span>: <span class="hljs-string">`Docs`</span>,
+        <span class="hljs-attr">contentDigest</span>: crypto
+          .createHash(<span class="hljs-string">`md5`</span>)
+          .update(<span class="hljs-built_in">JSON</span>.stringify(fieldData))
+          .digest(<span class="hljs-string">`hex`</span>),
+        <span class="hljs-attr">content</span>: <span class="hljs-built_in">JSON</span>.stringify(fieldData),
+        <span class="hljs-attr">description</span>: <span class="hljs-string">`Docs`</span>,
+      },
+    })
+
+    createParentChildLink({ <span class="hljs-attr">parent</span>: fileNode, <span class="hljs-attr">child</span>: node })
+  }
+}</code></pre>
+<h3>Another heading</h3>
+<h4>And another</h4>
+<h2>And another</h2>
+
+  </body>

@@ -104,8 +104,9 @@ exports.onCreateNode = ({ node, actions, getNode, createNodeId }) => {
 }
 ```
 
-### Another heading
+## More headings
 
-#### And another
+### And another
 
-## And another
+## And one more
+

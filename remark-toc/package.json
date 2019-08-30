@@ -9,6 +9,7 @@
   "dependencies": {
     "remark": "^11.0.1",
     "remark-html": "^10.0.0",
+    "remark-slug": "^5.1.2",
     "remark-toc": "^6.0.0"
   }
 }

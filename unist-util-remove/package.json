@@ -1,0 +1,15 @@
+{
+  "name": "remark-html",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node build"
+  },
+  "dependencies": {
+    "remark": "^11.0.1",
+    "remark-html": "^10.0.0",
+    "unist-util-remove": "^1.0.3",
+    "unist-util-visit": "^2.0.0"
+  }
+}

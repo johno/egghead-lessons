@@ -1,7 +1,0 @@
-.flex {
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: flex;
-  -webkit-flex: 1;
-  flex: 1;
-}

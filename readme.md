@@ -5,3 +5,4 @@
 - [remark-toc](./remark-toc)
 - [unist-util-remove](./unist-util-remove)
 - [postcss-plugin](./postcss-plugin)
+- [gatsby-toc](./gatsby-toc)

@@ -9,14 +9,14 @@ export default ({ headings }) => (
     {headings
       .filter(heading => heading.depth !== 1)
       .map(heading => (
-        <li key={heading}>
-          <Link
-            to={'#' + slugger.slug(heading.value)}
-          >
-            {heading.value}
-          </Link>
-        </li>
-      ))
-    }
+      <li key={heading.value}>
+        <Link
+          to={'#' + slugger.slug(heading.value)}
+        >
+          {heading.value}
+        </Link>
+      </li>
+    ))}
   </ul>
 )
+

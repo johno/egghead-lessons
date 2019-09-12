@@ -3,7 +3,9 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-mdx',
       options: {
-        remarkPlugins: [require('remark-slug')]
+        remarkPlugins: [
+          require('remark-slug')
+        ]
       }
     },
     {
